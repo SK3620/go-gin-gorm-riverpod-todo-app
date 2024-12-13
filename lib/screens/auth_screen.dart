@@ -6,13 +6,10 @@ import 'package:spotify_app/model/failure_model.dart';
 import 'package:spotify_app/providers/auth_view_model.dart';
 import 'package:spotify_app/widgets/auth_button.dart';
 import 'package:spotify_app/widgets/auth_text_field.dart';
-import 'package:spotify_app/widgets/common_progress.dart';
 import 'package:spotify_app/widgets/common_app_bar.dart';
 import 'package:spotify_app/widgets/common_error_dialog.dart';
 
 class AuthScreen extends ConsumerWidget {
-
-
   static AuthScreen builder(
       BuildContext context,
       GoRouterState state,
@@ -25,7 +22,7 @@ class AuthScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final vm = ref.watch(authViewModelProvider);
-    final vmNotifier = ref.watch(authViewModelProvider.notifier);
+    final vmNotifier = ref.read(authViewModelProvider.notifier);
 
     final usernameController = TextEditingController();
     final emailController = TextEditingController();
