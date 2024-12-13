@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:spotify_app/api/requests/post/sign_in_request.dart';
@@ -16,8 +18,9 @@ class AuthViewModel extends _$AuthViewModel {
   final ApiService _apiService = ApiService();
 
   @override
-  Future<()> build() async {
-    return ();
+  Future<bool> build() async {
+    // 認証完了か否か
+    return false;
   }
 
   Future<void> _handleAuthRequest(CommonHttpRouter request) async {
@@ -29,7 +32,7 @@ class AuthViewModel extends _$AuthViewModel {
         final responseModel = AuthModel.fromJson(json);
         await SecureStorage().save(
             Config.secureStorageJwtTokenKey, responseModel.jwtToken ?? '');
-        state = const AsyncValue.data(());
+        state = const AsyncValue.data(true);
       },
       error: (FailureModel error) {
         print(error);

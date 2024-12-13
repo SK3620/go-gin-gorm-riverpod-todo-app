@@ -25,6 +25,7 @@ class AuthScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final vm = ref.watch(authViewModelProvider);
+    final vmNotifier = ref.watch(authViewModelProvider.notifier);
 
     final usernameController = TextEditingController();
     final emailController = TextEditingController();
@@ -33,13 +34,17 @@ class AuthScreen extends ConsumerWidget {
     return Scaffold(
       appBar: const CommonAppBar(title: "認証画面"),
       body: vm.when(
-        loading: () => const CommonProgress(),
+        loading: () => const CircularProgressIndicator(),
         error: (error, _) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               CommonErrorDialog.show(error: error as FailureModel);
             });
         },
-        data: (_) {
+        data: (didAuthenticate) {
+          // 認証完了でToDoリスト画面へ遷移
+          if (didAuthenticate) {
+            navigationKey.currentContext?.push(AppRoute.todoList.path);
+          }
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -66,14 +71,21 @@ class AuthScreen extends ConsumerWidget {
                 AuthButton(
                   label: "サインアップ",
                   onPressed: () {
-                    context.push(AppRoute.todoList.path);
+                    vmNotifier.signUp(
+                        usernameController.text,
+                        emailController.text,
+                        passwordController.text
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
                 AuthButton(
                   label: "サインイン",
                   onPressed: () {
-                    context.push(AppRoute.todoList.path);
+                    vmNotifier.signIn(
+                        emailController.text,
+                        passwordController.text
+                    );
                   },
                 ),
               ],
