@@ -2,8 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:spotify_app/api/requests/post/sign_in_request.dart';
-import 'package:spotify_app/api/requests/post/sign_up_request.dart';
+import 'package:spotify_app/api/requests/post/auth/sign_in_request.dart';
+import 'package:spotify_app/api/requests/post/auth/sign_up_request.dart';
 import 'package:spotify_app/api/service/api_service.dart';
 import 'package:spotify_app/api/service/common_http_router.dart';
 import 'package:spotify_app/model/auth_model.dart';
