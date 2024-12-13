@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:spotify_app/widgets/custom_app_bar.dart';
+import 'package:spotify_app/widgets/common_app_bar.dart';
 
 import '../config/routes/routes_provider.dart';
 
@@ -15,7 +15,7 @@ class CreateToDoScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: CustomAppBar(
+        appBar: CommonAppBar(
           title: "ToDoタスク作成",
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../config/routes/routes_location.dart';
 import '../config/routes/routes_provider.dart';
-import '../widgets/custom_app_bar.dart';
+import '../widgets/common_app_bar.dart';
 
 class TodoListScreen extends ConsumerWidget {
   static TodoListScreen builder(BuildContext context,
@@ -16,7 +16,7 @@ class TodoListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: CustomAppBar(
+        appBar: CommonAppBar(
           title: "ToDoリスト",
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
