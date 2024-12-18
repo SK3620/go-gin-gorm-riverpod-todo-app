@@ -15,7 +15,8 @@ class UpdateToDoRequest extends CommonHttpRouter {
   HttpMethod get method => HttpMethod.PUT;
 
   @override
-  Object? body() {
-    ToDoModel.toJson(model);
-  }
+  List<String>? get pathParameters => [model.id.toString()];
+
+  @override
+  Object? body() => ToDoModel.toJson(model);
 }

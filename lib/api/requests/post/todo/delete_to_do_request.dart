@@ -15,5 +15,5 @@ class DeleteToDoRequest extends CommonHttpRouter {
   HttpMethod get method => HttpMethod.DELETE;
 
   @override
-  Map<String, dynamic>? get queryParameters => {'id': toDoId};
+  List<String>? get pathParameters => [toDoId.toString()];
 }

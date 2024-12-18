@@ -20,7 +20,6 @@ class ToDoModel {
   static Map<String, dynamic> toJson(ToDoModel instance) =>
       _$ToDoModelToJson(instance);
 
-  // copyWith メソッド
   ToDoModel copyWith({
     String? title,
     bool? isCompleted,

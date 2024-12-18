@@ -4,16 +4,16 @@ part 'auth_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class AuthModel {
-  final String name;
+  final String? username;
   final String email;
   final String password;
-  final String jwtToken;
+  final String? jwtToken;
 
   AuthModel({
-    this.name = '',
+    this.username,
     required this.email,
     required this.password,
-    this.jwtToken = '',
+    this.jwtToken,
   });
 
   factory AuthModel.fromJson(Map<String, dynamic> json) =>

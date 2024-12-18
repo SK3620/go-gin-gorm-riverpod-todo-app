@@ -6,8 +6,5 @@ class Config {
   static String secureStorageJwtTokenKey = "jwt-token-key";
 
   //api取得後のユーザーネーム保存場所のkey
-  static String secureStorageEmailKey = "user-email-key";
-
-  //api取得後のパスワード保存場所のkey
-  static String secureStoragePasswordKey = "password-key";
+  static String secureStorageUserKey = "user-key";
 }

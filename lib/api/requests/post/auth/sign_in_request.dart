@@ -15,7 +15,5 @@ class SignInRequest extends CommonHttpRouter {
   HttpMethod get method => HttpMethod.POST;
 
   @override
-  Object? body() {
-    AuthModel.toJson(model);
-  }
+  Object? body() => AuthModel.toJson(model);
 }

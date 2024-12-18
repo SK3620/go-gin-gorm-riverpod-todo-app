@@ -8,14 +8,11 @@ extension AppRouteExtention on AppRoute {
   String get path {
     switch (this) {
       case AppRoute.auth:
-        return "/Auth";
+        return "/auth";
       case AppRoute.todoList:
         return "/todoList";
-      case AppRoute.createToDo:
-        return "/createTodo";
-
       default:
-        return "/Auth";
+        return "";
     }
   }
 }

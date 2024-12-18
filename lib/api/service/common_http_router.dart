@@ -20,9 +20,25 @@ abstract class CommonHttpRouter {
             Config.secureStorageJwtTokenKey)}',
       };
 
+  List<String>? get pathParameters => null;
+
   Map<String, dynamic>? get queryParameters => null;
 
   Object? body() => null;
+
+  // パスパラメーターとクエリパラメーターを組み合わせる
+  String get combinedPathAndQueryParameters {
+    String combinedPath = path;
+    if (pathParameters != null) {
+      combinedPath += '/${pathParameters!.join('/')}';
+    }
+    if (queryParameters != null) {
+      combinedPath += '?${queryParameters!.entries
+          .map((entry) => '${entry.key}=${entry.value}')
+          .join('&')}';
+    }
+    return combinedPath;
+  }
 
   Future<Dio> get dio async {
     final headers = await this.headers;

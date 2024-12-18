@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:spotify_app/api/requests/post/auth/sign_in_request.dart';
 import 'package:spotify_app/api/requests/post/auth/sign_up_request.dart';
@@ -28,26 +25,24 @@ class AuthViewModel extends _$AuthViewModel {
     final result = await _apiService(request);
 
     result.when(
-      success: (Map<String, dynamic> json) async {
-        final responseModel = AuthModel.fromJson(json);
-        await SecureStorage().save(
-            Config.secureStorageJwtTokenKey, responseModel.jwtToken ?? '');
-        state = const AsyncValue.data(true);
-      },
-      error: (FailureModel error) {
-        print(error);
-        state = AsyncError(error, StackTrace.empty);
-      }
+        success: (Map<String, dynamic>? json) async {
+          final authModel = AuthModel.fromJson(json!);
+          await SecureStorage().save(Config.secureStorageJwtTokenKey, authModel.jwtToken ?? '');
+          state = const AsyncValue.data(true);
+        },
+        error: (FailureModel error) {
+          state = AsyncError(error, StackTrace.empty);
+        }
     );
   }
 
-  void signUp(String name, String email, String password) {
-    final authModel = AuthModel(name: name, email: email, password: password);
+  Future<void> signUp(String username, String email, String password) async {
+    final authModel = AuthModel(username: username, email: email, password: password);
     final signUpRequest = SignUpRequest(authModel);
     _handleAuthRequest(signUpRequest);
   }
 
-  void signIn(String email, String password) {
+  Future<void> signIn(String email, String password) async {
     final authModel = AuthModel(email: email, password: password);
     final signInRequest = SignInRequest(authModel);
     _handleAuthRequest(signInRequest);

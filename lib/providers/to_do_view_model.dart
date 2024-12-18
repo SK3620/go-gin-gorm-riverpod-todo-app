@@ -2,7 +2,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:spotify_app/api/requests/post/todo/add_to_do_request.dart';
 import 'package:spotify_app/api/requests/post/todo/delete_to_do_request.dart';
 import 'package:spotify_app/api/requests/post/todo/fetch_to_dos_request.dart';
-import 'package:spotify_app/api/requests/post/todo/toggle_completion_request.dart';
 import 'package:spotify_app/api/requests/post/todo/update_to_do_request.dart';
 import 'package:spotify_app/model/failure_model.dart';
 import 'package:spotify_app/model/to_do_model.dart';
@@ -16,101 +15,82 @@ class ToDoViewModel extends _$ToDoViewModel {
 
   @override
   Future<List<ToDoModel>> build() async {
-    return [];
+    await fetchToDos(); // 初回取得
+    return state.value ?? [];
   }
 
   // ToDoを取得
-  void fetchToDos() async {
+  Future<void> fetchToDos() async {
+    state = const AsyncValue.loading();
     final fetchToDosRequest = FetchToDosRequest();
     final result = await _apiService(fetchToDosRequest);
 
     result.when(
-        success: (Map<String, dynamic> json) async {
-          final List<dynamic> todosJson = json['todos'];
-          final List<ToDoModel> todos = todosJson.map((todoJson) {
-            return ToDoModel.fromJson(todoJson);
-          }).toList();
+        success: (Map<String, dynamic>? json) async {
+          final List<dynamic> todosJson = json!['todos'];
+          final List<ToDoModel> todos = todosJson
+              .map((todoJson) => ToDoModel.fromJson(todoJson as Map<String, dynamic>))
+              .toList();
           state = AsyncValue.data(todos);
         },
         error: (FailureModel error) {
-          print(error);
           state = AsyncError(error, StackTrace.empty);
         }
     );
   }
 
   // ToDoを追加
-  void addTodo(String title) async {
+  Future<void> addTodo(String title) async {
+    state = const AsyncValue.loading();
     final addToDoRequest = AddToDoRequest(title);
     final result = await _apiService(addToDoRequest);
 
     result.when(
-        success: (Map<String, dynamic> json) async {
-          final newToDo = ToDoModel.fromJson(json);
+        success: (Map<String, dynamic>? json) async {
+          final newToDo = ToDoModel.fromJson(json!);
           final currentList = state.value ?? [];
           final updatedList = [...currentList, newToDo];
           state = AsyncValue.data(updatedList);
         },
         error: (FailureModel error) {
-          print(error);
           state = AsyncError(error, StackTrace.empty);
         }
     );
   }
 
   // ToDoを削除
-  void removeTodo(int id) async {
+  Future<void> removeTodo(int id) async {
+    state = const AsyncValue.loading();
     final deleteToDoRequest = DeleteToDoRequest(id);
     final result = await _apiService(deleteToDoRequest);
 
     result.when(
-        success: (Map<String, dynamic> json) async {
+        success: (Map<String, dynamic>? _) async {
           final updatedList = state.value?.where((todo) => todo.id != id).toList() ?? [];
           state = AsyncValue.data(updatedList);
         },
         error: (FailureModel error) {
-          print(error);
           state = AsyncError(error, StackTrace.empty);
         }
     );
   }
 
   // ToDoを更新
-  void updateTodo(int id, String newTitle) async {
-    final toDoModel = ToDoModel(id: id, title: newTitle);
+  Future<void> updateTodo(int id, String newTitle, bool isCompleted) async {
+    state = const AsyncValue.loading();
+    final toDoModel = ToDoModel(id: id, title: newTitle, isCompleted: isCompleted);
     final updateToDoRequest = UpdateToDoRequest(toDoModel);
     final result = await _apiService(updateToDoRequest);
 
     result.when(
-        success: (Map<String, dynamic> json) async {
+        success: (Map<String, dynamic>? _) async {
           final currentList = state.value ?? [];
           final updatedList = currentList.map((todo) {
-            return todo.id == id ? todo.copyWith(title: newTitle) : todo;
+            return todo.id == id ? todo.copyWith(title: newTitle, isCompleted: isCompleted) : todo;
           }).toList();
           state = AsyncValue.data(updatedList);
         },
         error: (FailureModel error) {
-          print(error);
-          state = AsyncError(error, StackTrace.empty);
-        }
-    );
-  }
-
-  // ToDoの完了状態を切り替え
-  void toggleCompletion(int id) async {
-    final toggleCompletionRequest = ToggleCompletionRequest(id);
-    final result = await _apiService(toggleCompletionRequest);
-
-    result.when(
-        success: (Map<String, dynamic> json) async {
-          final currentList = state.value ?? [];
-          final updatedList = currentList.map((todo) {
-            return todo.id == id ? todo.copyWith(isCompleted: !todo.isCompleted) : todo;
-          }).toList();
-          state = AsyncValue.data(updatedList);
-        },
-        error: (FailureModel error) {
-          print(error);
           state = AsyncError(error, StackTrace.empty);
         }
     );

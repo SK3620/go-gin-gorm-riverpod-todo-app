@@ -6,21 +6,20 @@ import 'package:spotify_app/model/failure_model.dart';
 import 'common_http_router.dart';
 import 'http_method.dart';
 
-class ApiService extends UseCase<CommonHttpRouter, Map<String, dynamic>> {
+class ApiService extends UseCase<CommonHttpRouter, Map<String, dynamic>?> {
   @override
-  Future<Map<String, dynamic>> execute(CommonHttpRouter request) async {
+  Future<Map<String, dynamic>?> execute(CommonHttpRouter request) async {
     final dio = await request.dio;
 
     Response? response;
     try {
       if (request.method == HttpMethod.GET) {
         response = await dio.request(
-          request.path,
-          queryParameters: request.queryParameters,
+          request.combinedPathAndQueryParameters
         );
       } else {
         response = await dio.request(
-          request.path,
+          request.combinedPathAndQueryParameters,
           data: request.body(),
         );
       }
@@ -35,7 +34,7 @@ class ApiService extends UseCase<CommonHttpRouter, Map<String, dynamic>> {
 
       // 今回はエラーも例外も統一してエラーダイアログとして表示するため、FailureModelにまとめてマッピングし、エラーとして扱う
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
-        return response.extra;
+        return response.data['data'];
       } else {
         final httpError = FailureModel.fromJson(response.extra);
         throw httpError;

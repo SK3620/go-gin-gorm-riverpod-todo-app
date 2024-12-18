@@ -9,11 +9,11 @@ part of 'to_do_model.dart';
 ToDoModel _$ToDoModelFromJson(Map<String, dynamic> json) => ToDoModel(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
-      isCompleted: json['isCompleted'] as bool? ?? false,
+      isCompleted: json['is_completed'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$ToDoModelToJson(ToDoModel instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'isCompleted': instance.isCompleted,
+      'is_completed': instance.isCompleted,
     };
