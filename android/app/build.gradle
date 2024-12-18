@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kenta_suzuki.spotify_app.spotify_app"
+    namespace = "com.kenta_suzuki.riverpod_to_do_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
