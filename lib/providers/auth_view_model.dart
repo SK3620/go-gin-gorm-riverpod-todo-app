@@ -4,7 +4,7 @@ import 'package:spotify_app/api/requests/post/auth/sign_up_request.dart';
 import 'package:spotify_app/api/service/api_service.dart';
 import 'package:spotify_app/api/service/common_http_router.dart';
 import 'package:spotify_app/model/auth_model.dart';
-import 'package:spotify_app/model/failure_model.dart';
+import 'package:spotify_app/model/custom_exception.dart';
 import 'package:spotify_app/config/config.dart';
 import 'package:spotify_app/config/storage.dart';
 
@@ -30,7 +30,7 @@ class AuthViewModel extends _$AuthViewModel {
           await SecureStorage().save(Config.secureStorageJwtTokenKey, authModel.jwtToken ?? '');
           state = const AsyncValue.data(true);
         },
-        error: (FailureModel error) {
+        exception: (CustomException error) {
           state = AsyncError(error, StackTrace.empty);
         }
     );

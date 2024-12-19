@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:spotify_app/api/service/result.dart';
-import 'package:spotify_app/model/failure_model.dart';
+import 'package:spotify_app/model/custom_error.dart';
+import 'package:spotify_app/model/custom_exception.dart';
 import 'common_http_router.dart';
 import 'http_method.dart';
 
@@ -29,22 +31,18 @@ class ApiService extends UseCase<CommonHttpRouter, Map<String, dynamic>?> {
       print(response.statusMessage);
 
       if (response == null) {
-        throw FailureModel(detail: 'レスポンスがありません。');
+        throw CustomError(999, 'レスポンスがありません。');
       }
 
-      // 今回はエラーも例外も統一してエラーダイアログとして表示するため、FailureModelにまとめてマッピングし、エラーとして扱う
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data['data'];
       } else {
-        final httpError = FailureModel.fromJson(response.extra);
-        throw httpError;
+      throw CustomError(response.statusCode ?? 999, response.statusMessage ?? '不明なエラーが発生しました。');
       }
     } on DioException catch (exception) {
-      print(exception);
-      throw FailureModel(detail: exception.message ?? '');
+      throw CustomException(exception.response?.statusCode ?? 999, exception.message ?? '不明なエラーが発生しました。');
     } on Exception catch (exception) {
-      print(exception);
-      throw FailureModel(detail: exception.toString());
+      throw CustomException(999, exception.toString());
     }
   }
 }
@@ -54,8 +52,12 @@ abstract class UseCase<I, O> {
     try {
       final data = await execute(request);
       return Result.success(data);
-    } on FailureModel catch (error) {
-      return Result.error(error);
+    } on CustomException catch (exception) {
+      return Result.exception(exception);
+    } on CustomError catch (error) {
+      debugPrint('statusCode: ${error.statsCode.toString()}');
+      debugPrint('message: ${error.message}');
+      throw error;
     }
   }
 

@@ -6,7 +6,7 @@ part of 'to_do_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$toDoViewModelHash() => r'c8f2268f3112a33fe76754df8912e593c9f4e4c7';
+String _$toDoViewModelHash() => r'92582025f56b84360ae44ffc18e116969cd62f5f';
 
 /// See also [ToDoViewModel].
 @ProviderFor(ToDoViewModel)

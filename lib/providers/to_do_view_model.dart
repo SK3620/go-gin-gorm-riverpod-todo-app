@@ -3,7 +3,7 @@ import 'package:spotify_app/api/requests/post/todo/add_to_do_request.dart';
 import 'package:spotify_app/api/requests/post/todo/delete_to_do_request.dart';
 import 'package:spotify_app/api/requests/post/todo/fetch_to_dos_request.dart';
 import 'package:spotify_app/api/requests/post/todo/update_to_do_request.dart';
-import 'package:spotify_app/model/failure_model.dart';
+import 'package:spotify_app/model/custom_exception.dart';
 import 'package:spotify_app/model/to_do_model.dart';
 import '../api/service/api_service.dart';
 
@@ -33,7 +33,7 @@ class ToDoViewModel extends _$ToDoViewModel {
               .toList();
           state = AsyncValue.data(todos);
         },
-        error: (FailureModel error) {
+        exception: (CustomException error) {
           state = AsyncError(error, StackTrace.empty);
         }
     );
@@ -52,7 +52,7 @@ class ToDoViewModel extends _$ToDoViewModel {
           final updatedList = [...currentList, newToDo];
           state = AsyncValue.data(updatedList);
         },
-        error: (FailureModel error) {
+        exception: (CustomException error) {
           state = AsyncError(error, StackTrace.empty);
         }
     );
@@ -69,7 +69,7 @@ class ToDoViewModel extends _$ToDoViewModel {
           final updatedList = state.value?.where((todo) => todo.id != id).toList() ?? [];
           state = AsyncValue.data(updatedList);
         },
-        error: (FailureModel error) {
+        exception: (CustomException error) {
           state = AsyncError(error, StackTrace.empty);
         }
     );
@@ -90,7 +90,7 @@ class ToDoViewModel extends _$ToDoViewModel {
           }).toList();
           state = AsyncValue.data(updatedList);
         },
-        error: (FailureModel error) {
+        exception: (CustomException error) {
           state = AsyncError(error, StackTrace.empty);
         }
     );

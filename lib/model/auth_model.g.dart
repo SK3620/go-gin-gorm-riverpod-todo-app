@@ -7,15 +7,15 @@ part of 'auth_model.dart';
 // **************************************************************************
 
 AuthModel _$AuthModelFromJson(Map<String, dynamic> json) => AuthModel(
-      username: json['username'] as String ?? '',
+      username: json['username'] as String?,
       email: json['email'] as String,
       password: json['password'] as String,
-      jwtToken: json['jwt_token'] as String ?? '',
+      jwtToken: json['jwtToken'] as String?,
     );
 
 Map<String, dynamic> _$AuthModelToJson(AuthModel instance) => <String, dynamic>{
-      'username': instance.username ?? '',
+      'username': instance.username,
       'email': instance.email,
       'password': instance.password,
-      'jwt_token': instance.jwtToken ?? '',
+      'jwtToken': instance.jwtToken,
     };

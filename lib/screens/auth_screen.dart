@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spotify_app/config/routes/routes.dart';
-import 'package:spotify_app/model/failure_model.dart';
+import 'package:spotify_app/model/custom_exception.dart';
 import 'package:spotify_app/providers/auth_view_model.dart';
 import 'package:spotify_app/widgets/auth_button.dart';
 import 'package:spotify_app/widgets/auth_text_field.dart';
@@ -103,7 +103,7 @@ class AuthScreen extends ConsumerWidget {
       ),
       error: (error, _) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          CommonErrorDialog.show(error: error as FailureModel);
+          CommonErrorDialog.show(exception: error as CustomException);
         });
         return Container();
       },

@@ -6,7 +6,7 @@ import 'package:spotify_app/model/to_do_model.dart';
 import 'package:spotify_app/providers/to_do_view_model.dart';
 import 'package:spotify_app/widgets/common_app_bar.dart';
 import 'package:spotify_app/widgets/to_do_dialog.dart';
-import '../model/failure_model.dart';
+import '../model/custom_exception.dart';
 import '../widgets/common_error_dialog.dart';
 
 class TodoListScreen extends ConsumerWidget {
@@ -102,7 +102,7 @@ class TodoListScreen extends ConsumerWidget {
       ),
       error: (error, _) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          CommonErrorDialog.show(error: error as FailureModel);
+          CommonErrorDialog.show(exception: error as CustomException);
         });
         return Container();
       },
