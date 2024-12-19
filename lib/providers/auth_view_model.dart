@@ -5,8 +5,8 @@ import 'package:spotify_app/api/service/api_service.dart';
 import 'package:spotify_app/api/service/common_http_router.dart';
 import 'package:spotify_app/model/auth_model.dart';
 import 'package:spotify_app/model/failure_model.dart';
-import 'package:spotify_app/widgets/config.dart';
-import 'package:spotify_app/widgets/storage.dart';
+import 'package:spotify_app/config/config.dart';
+import 'package:spotify_app/config/storage.dart';
 
 part 'auth_view_model.g.dart';
 

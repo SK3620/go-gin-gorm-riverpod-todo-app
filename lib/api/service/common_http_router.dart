@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:spotify_app/api/service/api_url.dart';
-import 'package:spotify_app/widgets/config.dart';
-import 'package:spotify_app/widgets/storage.dart';
+import 'package:spotify_app/config/config.dart';
+import 'package:spotify_app/config/storage.dart';
 import 'http_method.dart';
 
 abstract class CommonHttpRouter {
