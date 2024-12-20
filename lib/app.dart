@@ -7,6 +7,7 @@ class RiverpodToDoApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // GoRouterを監視
     final route = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
@@ -14,7 +15,7 @@ class RiverpodToDoApp extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerConfig: route,
+      routerConfig: route, // GoRouterの設定を適用
     );
   }
 }
