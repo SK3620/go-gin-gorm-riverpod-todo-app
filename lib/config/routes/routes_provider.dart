@@ -8,11 +8,12 @@ part 'routes_provider.g.dart';
 
 final navigationKey = GlobalKey<NavigatorState>();
 
+// StateとなるGoRouteを監視
 @riverpod
 GoRouter goRouter(ref) {
   return GoRouter(
-    initialLocation: AppRoute.auth.path,
+    initialLocation: AppRoute.auth.path, // アプリ起動時の初期画面のパス
     navigatorKey: navigationKey,
-    routes: appRoutes
+    routes: appRoutes // 定義済みのルートを設定
   );
 }

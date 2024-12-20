@@ -39,7 +39,7 @@ class ToDoViewModel extends _$ToDoViewModel {
     );
   }
 
-  // ToDoを追加
+  // ToDoを新規作成
   Future<void> addTodo(String title) async {
     state = const AsyncValue.loading();
     final addToDoRequest = AddToDoRequest(title);

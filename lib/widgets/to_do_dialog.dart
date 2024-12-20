@@ -22,6 +22,7 @@ void showAddDialog(ToDoViewModel vmNotifier) {
           ),
           TextButton(
             onPressed: () {
+              // ToDo新規作成処理を発火
               vmNotifier.addTodo(controller.text);
               Navigator.of(context).pop();
             },
@@ -75,6 +76,7 @@ void showEditDialog(ToDoViewModel vmNotifier, ToDoModel todo) {
           ),
           TextButton(
             onPressed: () {
+              // ToDo更新処理を発火
               vmNotifier.updateTodo(
                 todo.id,
                 controller.text,

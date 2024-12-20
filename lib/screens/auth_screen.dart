@@ -20,7 +20,9 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //  認証状態(true or false)、ローディング中状態、エラー状態を監視
     final vm = ref.watch(authViewModelProvider);
+    // AuthViewModelのインスタンス
     final vmNotifier = ref.read(authViewModelProvider.notifier);
 
     final usernameController = TextEditingController();
@@ -43,10 +45,13 @@ class AuthScreen extends ConsumerWidget {
     );
   }
 
-  Widget _authForm(TextEditingController usernameController,
+  // 認証フォーム
+  Widget _authForm(
+      TextEditingController usernameController,
       TextEditingController emailController,
       TextEditingController passwordController,
-      AuthViewModel vmNotifier) {
+      AuthViewModel vmNotifier
+      ) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -73,6 +78,7 @@ class AuthScreen extends ConsumerWidget {
           AuthButton(
             label: "サインアップ",
             onPressed: () {
+              // サインアップ処理発火
               vmNotifier.signUp(
                 usernameController.text,
                 emailController.text,
@@ -84,6 +90,7 @@ class AuthScreen extends ConsumerWidget {
           AuthButton(
             label: "サインイン",
             onPressed: () {
+              // サインイン処理発火
               vmNotifier.signIn(
                 emailController.text,
                 passwordController.text,
@@ -97,19 +104,23 @@ class AuthScreen extends ConsumerWidget {
 
   Widget _buildLoadingOrErrorDialog(AsyncValue<bool> vm) {
     return vm.when(
-      loading: () =>
+      // 状態(state)がローディング中の場合
+    loading: () =>
       const Center(
         child: CircularProgressIndicator(strokeWidth: 6.0, color: Colors.grey,),
       ),
+      // 状態(state)がエラーの場合
       error: (error, _) {
+        // レンダリング完了後にエラーダイアログを表示
         WidgetsBinding.instance.addPostFrameCallback((_) {
           CommonErrorDialog.show(exception: error as CustomException);
         });
         return Container();
       },
+      // 状態(state)がtrue(認証成功）の場合
       data: (didAuthenticate) {
         if (didAuthenticate) {
-          // レンダリング完了後に画面遷移
+          // レンダリング完了後にToDoリスト画面へ遷移
           WidgetsBinding.instance.addPostFrameCallback((_) {
             navigationKey.currentContext?.push(AppRoute.todoList.path);
           });

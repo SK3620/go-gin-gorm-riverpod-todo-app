@@ -20,7 +20,9 @@ class TodoListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //  List<ToDoModel>の値、ローディング中状態、エラー状態を監視
     final vm = ref.watch(toDoViewModelProvider);
+    // ToDoViewModelのインスタンス
     final vmNotifier = ref.read(toDoViewModelProvider.notifier);
 
     return Scaffold(
@@ -28,7 +30,7 @@ class TodoListScreen extends ConsumerWidget {
         title: "Todoリスト",
         actions: [
           TextButton(
-              onPressed: () => { vmNotifier.fetchToDos() },
+              onPressed: () => { vmNotifier.fetchToDos() }, // ToDo全件取得処理を発火
               child: const Center(child: Text('再取得', style: TextStyle(fontSize: 16, color: Colors.purple),),)
           )
         ],
@@ -44,7 +46,8 @@ class TodoListScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showAddDialog(vmNotifier);
+          // Todo新規作成ダイアログを表示
+          showAddDialog(vmNotifier); // ToDoViewModelを渡す
         },
         child: Icon(Icons.add),
       ),
@@ -79,12 +82,14 @@ class TodoListScreen extends ConsumerWidget {
               IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
+                  // Todo編集ダイアログを表示
                   showEditDialog(vmNotifier, todo);
                 },
               ),
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
+                  // Todo削除処理を発火
                   vmNotifier.removeTodo(todo.id);
                 },
               ),
@@ -97,15 +102,19 @@ class TodoListScreen extends ConsumerWidget {
 
   Widget _buildLoadingOrErrorDialog(AsyncValue<List<ToDoModel>> vm) {
     return vm.when(
+      // 状態(state)がローディング中の場合
       loading: () => const Center(
         child: CircularProgressIndicator(strokeWidth: 6.0, color: Colors.grey,),
       ),
+      // 状態(state)がエラーの場合
       error: (error, _) {
+        // レンダリング完了後にエラーダイアログを表示
         WidgetsBinding.instance.addPostFrameCallback((_) {
           CommonErrorDialog.show(exception: error as CustomException);
         });
         return Container();
       },
+      // 空のWidgetを返す
       data: (_) => Container(),
     );
   }
