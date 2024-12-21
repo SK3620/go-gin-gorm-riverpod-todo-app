@@ -5,6 +5,8 @@ import (
 	"go-gin-gorm-riverpod-todo-app/models"
 )
 
+// モデルの作成、修正後、以下のコマンドを実行してマイグレーションを実行
+// go run migrations/migration.go
 func main() {
 	infra.Initialize()
 	db := infra.SetupDB()
